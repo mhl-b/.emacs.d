@@ -1,0 +1,9 @@
+.cache
+auto-save-list
+eln-cache
+elpa
+transient
+tree-sitter
+.emacs.desktop*
+history
+recentf
