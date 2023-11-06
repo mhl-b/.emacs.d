@@ -4,8 +4,6 @@
              '("melpa" . "https://melpa.org/packages/") t)
 (package-initialize)
 
-
-
 (use-package minions
   :ensure t
   :config
@@ -32,6 +30,11 @@
   (setq read-extended-command-predicate
         #'command-completion-default-include-p))
 
+(use-package consult
+  :ensure t
+  :bind(("C-c g" . consult-git-grep)
+	("C-s" . consult-line)))
+
 (use-package marginalia
   :ensure t
   :init
@@ -51,12 +54,39 @@
 (use-package magit
   :ensure t)
 
+(use-package eglot
+  :bind
+  (("C-c l a" . eglot-code-actions)
+   ("C-c l r" . eglot-rename)
+   ("C-c l f" . eglot-format-buffer)
+   ("C-c l q" . eldoc)))
+
+(use-package which-key
+  :ensure t
+  :init (which-key-mode))
+
 (use-package rust-mode
   :ensure t
   :init
-  (setq rust-format-on-save t)
+  (setq rust-format-on-save t))
+
+(use-package rust-ts-mode  
+  :bind
+  (:map rust-ts-mode-map
+   ("C-c r c" . rust-compile)
+   ("C-c r k" . rust-check)
+   ("C-c r t" . rust-test))
   :hook
-  (rust-mode . eglot-ensure))
+  (rust-ts-mode . eglot-ensure))
+
+(use-package js2-mode
+  :ensure t
+  :hook
+  (js2-mode . eglot-ensure))
+
+(use-package typescript-ts
+  :hook
+  (typescript-ts-mode . eglot-ensure))
 
 (use-package emacs
   :init
@@ -89,7 +119,7 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
-   '(rust-mode magit marginalia vertico orderless corfu minions)))
+   '(which-key js2-mode consult rust-mode magit marginalia vertico orderless corfu minions)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
